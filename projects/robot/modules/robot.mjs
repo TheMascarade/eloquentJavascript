@@ -48,13 +48,14 @@ export var VillageState = class VillageState {
 export function runRobot(state, robot, memory) {
     for (let turn = 0; ; turn++) {
         if (state.parcels.length == 0) {
-            console.log(`Done in ${turn} turns`);
-            break;
+            //console.log(`Done in ${turn} turns`);
+            return turn
+            //break;
         }
         let action = robot(state, memory);
         state = state.move(action.direction);
         memory = action.memory;
-        console.log(`Moved to ${action.direction}`);
+        //console.log(`Moved to ${action.direction}`);
     }
 }
 
@@ -126,4 +127,19 @@ export function goalOrientedRobot({ place, parcels }, route) {
     return { direction: route[0], memory: route.slice(1) };
 }
 
+export function superiorRobot({ place, parcels }, routes) {
+    let route = [];
+    for (let parcel of parcels){
+        
+    }
+    if (routes.length == 0) {
+        let parcel = parcels[0];
+        if (parcel.place != place) {
+            routes = findRoute(roadGraph, place, parcel.place);
+        } else {
+            routes = findRoute(roadGraph, place, parcel.address);
+        }
+    }
+    return { direction: routes[0], memory: routes.slice(1) };
+}
 export * as robot from "./robot.mjs"
